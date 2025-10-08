@@ -1,87 +1,85 @@
 @extends('layouts.app')
 
+@section('title', 'TechShop - Najbolja tehnologija u Hrvatskoj')
+
+@section('styles')
+    /* Put custom page-specific CSS here */
+@endsection
+
 @section('content')
-    <div class="container">
-        <div class="row">
-
-            {{-- Sidebar kategorije --}}
-            <div class="col-md-3">
-                <h4>Kategorije</h4>
-                <ul class="list-group mb-4">
-                    <li class="list-group-item {{ $categoryId ? '' : 'active' }}">
-                        <a href="{{ route('proizvodi.index', request()->only(['search','sort'])) }}" 
-                           class="text-decoration-none d-block">
-                            Sve kategorije
-                        </a>
-                    </li>
-                    @foreach($kategorije as $kat)
-                        <li class="list-group-item {{ $categoryId == $kat->id_kategorija ? 'active' : '' }}">
-                            <a href="{{ route('proizvodi.kategorija', array_merge(['id' => $kat->id_kategorija], request()->only(['search','sort']))) }}"
-                               class="text-decoration-none d-block">
-                                {{ $kat->ImeKategorija }}
-                            </a>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-
-            {{-- Main content --}}
-            <div class="col-md-9">
-                <h4>Proizvodi</h4>
-
-                <!-- 🔍 Search & Sort -->
-                <form method="GET"
-                      action="{{ $categoryId ? route('proizvodi.kategorija', $categoryId) : route('proizvodi.index') }}"
-                      class="row mb-4">
-                    <div class="col-md-6">
-                        <input type="text" name="search" value="{{ request('search') }}" class="form-control"
-                               placeholder="Pretraži proizvode...">
-                    </div>
-                    <div class="col-md-4">
-                        <select name="sort" class="form-select" onchange="this.form.submit()">
-                            <option value="">Sortiraj</option>
-                            <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>Naziv (A-Z)</option>
-                            <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>Naziv (Z-A)</option>
-                            <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Cijena (najniža)</option>
-                            <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Cijena (najviša)</option>
-                            <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Najnoviji</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary w-100">Traži</button>
-                    </div>
-                </form>
-
-                <!-- 🔲 Product grid -->
-                <!-- 🔲 Product grid -->
-<div class="row">
-    @forelse($proizvodi as $proizvod)
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm border-0">
-                <img src="{{ asset($proizvod->Slika) }}" class="card-img-top"
-                     alt="{{ $proizvod->Naziv }}" style="height:200px; object-fit:cover;">
-                <div class="card-body">
-                    <h5 class="card-title">{{ $proizvod->Naziv }}</h5>
-                    <p class="text-muted mb-1">{{ $proizvod->kategorija->ImeKategorija ?? '' }}</p>
-                    <p class="fw-bold text-primary">{{ number_format($proizvod->Cijena, 2) }} €</p>
+    <!-- Hero Section -->
+    <section class="hero-section bg-dark text-white py-5">
+        <div class="container py-5">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">Dobrodošli u TechShop</h1>
+                    <p class="lead mb-4">
+                        Najbolje tehnološke proizvode po najpovoljnijim cijenama.
+                        Istražite naš asortiman i pronađite savršene gadgete za svoje potrebe.
+                    </p>
                 </div>
-                <div class="card-footer text-center bg-white border-0">
-                    <a href="#" class="btn btn-primary btn-sm">Dodaj u košaricu</a>
+                <div class="col-lg-6 d-none d-lg-block">
+                    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475" alt="Tech products"
+                        class="img-fluid rounded shadow">
                 </div>
             </div>
         </div>
-    @empty
-        <p>Nema proizvoda u ovoj kategoriji.</p>
-    @endforelse
-</div>
+    </section>
 
-<!-- 📄 Pagination -->
-<div class="d-flex justify-content-center mt-4">
-    {{ $proizvodi->links() }}
-</div>
-
+    {{-- Popularne kategorije --}}
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">Popularne kategorije</h2>
+            <div class="row g-4">
+                {{-- Example category card --}}
+                <div class="col-md-3 col-sm-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <div class="mb-3" style="font-size: 2.5rem;">
+                                <i class="fas fa-microchip"></i>
+                            </div>
+                            <h5 class="card-title">Laptop</h5>
+                            <a href="{{ url('/category/1') }}" class="stretched-link"></a>
+                        </div>
+                    </div>
+                </div>
+                {{-- Repeat for other categories --}}
             </div>
-
         </div>
-    </div>
+    </section>
+
+    {{-- Featured Products --}}
+    <section id="featured-products" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Izdvojeni proizvodi</h2>
+            <div class="row g-4">
+                {{-- Loop products dynamically --}}
+                @foreach ($proizvodi as $product)
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card h-100 product-card">
+                            <div class="product-img-container" style="height: 200px; overflow: hidden;">
+                                <img src="{{ $product->image }}" class="product-img w-100 h-100 object-fit-cover"
+                                    alt="{{ $product->title }}">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $product->title }}</h5>
+                                <p class="card-text text-muted">{{ $product->description }}</p>
+                                <h5 class="text-primary mb-0">{{ $product->price }} €</h5>
+                            </div>
+                           <div class="card-footer text-center bg-white border-0">
+    <form action="{{ route('cart.add', ['id' => $product->Proizvod_ID]) }}" method="POST">
+        @csrf
+        <button type="submit" class="btn btn-primary btn-sm">
+            Dodaj u košaricu
+        </button>
+    </form>
+</div>
+
+
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
 @endsection
