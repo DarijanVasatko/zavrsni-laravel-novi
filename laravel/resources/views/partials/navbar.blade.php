@@ -26,7 +26,7 @@
                 <!-- Categories Dropdown -->
                 <li class="nav-item dropdown position-relative kategorije-dropdown">
                     <a class="nav-link dropdown-toggle text-white fw-medium"
-                       href="{{ route('index.index') }}"
+                       href="{{ route('proizvodi.index') }}"
                        id="kategorijeDropdown" role="button" aria-expanded="false">
                         <i class="bi bi-grid me-1"></i> Kategorije
                     </a>
