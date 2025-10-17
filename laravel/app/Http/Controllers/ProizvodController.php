@@ -8,44 +8,86 @@ use App\Models\Kategorija;
 
 class ProizvodController extends Controller
 {
+    /**
+     * Show all products.
+     */
     public function index(Request $request)
     {
         $query = Proizvod::query();
 
-        // search filter
-        if ($request->has('search')) {
+        // 🔍 Search
+        if ($request->filled('search')) {
             $query->where('Naziv', 'like', '%' . $request->search . '%');
         }
 
-        // sorting
-        if ($request->sort == 'price_asc') {
-            $query->orderBy('Cijena', 'asc');
-        } elseif ($request->sort == 'price_desc') {
-            $query->orderBy('Cijena', 'desc');
-        } elseif ($request->sort == 'name_asc') {
-            $query->orderBy('Naziv', 'asc');
-        } elseif ($request->sort == 'name_desc') {
-            $query->orderBy('Naziv', 'desc');
-        } elseif ($request->sort == 'newest') {
-            $query->orderBy('created_at', 'desc');
+        // ↕️ Sorting
+        switch ($request->sort) {
+            case 'price_asc':
+                $query->orderBy('Cijena', 'asc');
+                break;
+            case 'price_desc':
+                $query->orderBy('Cijena', 'desc');
+                break;
+            case 'name_asc':
+                $query->orderBy('Naziv', 'asc');
+                break;
+            case 'name_desc':
+                $query->orderBy('Naziv', 'desc');
+                break;
+            case 'newest':
+                $query->orderBy('created_at', 'desc');
+                break;
         }
 
         $proizvodi = $query->paginate(9);
         $kategorije = Kategorija::all();
 
-        // If user visits /categories, show category.blade.php
-        if ($request->is('categories')) {
-            return view('category', [
-                'proizvodi' => $proizvodi,
-                'kategorije' => $kategorije,
-                'categoryId' => null
-            ]);
+        // Always show the category page layout for this
+        return view('category', [
+            'proizvodi' => $proizvodi,
+            'kategorije' => $kategorije,
+            'categoryId' => null,
+        ]);
+    }
+
+    /**
+     * Show products for a specific category.
+     */
+    public function kategorija($id, Request $request)
+    {
+        $query = Proizvod::where('id_kategorija', $id);
+
+        // 🔍 Search
+        if ($request->filled('search')) {
+            $query->where('Naziv', 'like', '%' . $request->search . '%');
         }
 
-        // Otherwise, show homepage
-        return view('index', [
+        // ↕️ Sorting
+        switch ($request->sort) {
+            case 'price_asc':
+                $query->orderBy('Cijena', 'asc');
+                break;
+            case 'price_desc':
+                $query->orderBy('Cijena', 'desc');
+                break;
+            case 'name_asc':
+                $query->orderBy('Naziv', 'asc');
+                break;
+            case 'name_desc':
+                $query->orderBy('Naziv', 'desc');
+                break;
+            case 'newest':
+                $query->orderBy('created_at', 'desc');
+                break;
+        }
+
+        $proizvodi = $query->paginate(9);
+        $kategorije = Kategorija::all();
+
+        return view('category', [
             'proizvodi' => $proizvodi,
-            'kategorije' => $kategorije
+            'kategorije' => $kategorije,
+            'categoryId' => $id,
         ]);
     }
 }

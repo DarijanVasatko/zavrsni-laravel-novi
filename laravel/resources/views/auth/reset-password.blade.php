@@ -4,7 +4,7 @@
             <div class="card shadow-lg border-0 rounded-4">
                 <div class="card-body p-5">
                     <h3 class="text-center mb-4 text-primary fw-bold">
-                        <i class="bi bi-box-arrow-in-right me-2"></i> Prijava u TechShop
+                        <i class="bi bi-key me-2"></i> Postavi novu lozinku
                     </h3>
 
                     <!-- Validation Errors -->
@@ -18,42 +18,36 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route('password.store') }}">
                         @csrf
+
+                        <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
                         <div class="mb-3">
                             <label for="email" class="form-label">Email adresa</label>
                             <input id="email" class="form-control rounded-pill" type="email" name="email"
-                                   value="{{ old('email') }}" required autofocus autocomplete="username">
+                                   value="{{ old('email', $request->email) }}" required autofocus>
                         </div>
 
                         <div class="mb-3">
-                            <label for="password" class="form-label">Lozinka</label>
-                            <input id="password" class="form-control rounded-pill" type="password"
-                                   name="password" required autocomplete="current-password">
+                            <label for="password" class="form-label">Nova lozinka</label>
+                            <input id="password" class="form-control rounded-pill" type="password" name="password"
+                                   required autocomplete="new-password">
                         </div>
 
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="remember" id="remember_me">
-                                <label class="form-check-label" for="remember_me">Zapamti me</label>
-                            </div>
-
-                            @if (Route::has('password.request'))
-                                <a class="text-decoration-none text-primary small" href="{{ route('password.request') }}">
-                                    Zaboravljena lozinka?
-                                </a>
-                            @endif
+                        <div class="mb-3">
+                            <label for="password_confirmation" class="form-label">Potvrdi lozinku</label>
+                            <input id="password_confirmation" class="form-control rounded-pill" type="password"
+                                   name="password_confirmation" required autocomplete="new-password">
                         </div>
 
                         <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fw-semibold">
-                            Prijavi se
+                            Spremi novu lozinku
                         </button>
 
                         <div class="text-center mt-3">
-                            <span class="text-muted">Nemaš račun?</span>
-                            <a href="{{ route('register') }}" class="text-decoration-none fw-semibold text-primary">
-                                Registriraj se
+                            <a href="{{ route('login') }}" class="text-decoration-none text-primary">
+                                <i class="bi bi-arrow-left"></i> Povratak na prijavu
                             </a>
                         </div>
                     </form>
