@@ -23,3 +23,7 @@ Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
 
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

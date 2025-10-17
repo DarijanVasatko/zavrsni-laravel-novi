@@ -1,10 +1,10 @@
-<nav class="navbar navbar-expand-lg navbar-dark shadow-sm sticky-top" style="background: linear-gradient(90deg, #0d6efd, #0046b8);">
+<!-- resources/views/partials/navbar.blade.php -->
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm sticky-top" style="background: #0d6efd;">
     <div class="container py-2">
 
         <!-- Brand -->
         <a class="navbar-brand fw-bold d-flex align-items-center text-white" href="{{ url('/') }}">
-            <i class="bi bi-display me-2 fs-4"></i>
-            <span>TechShop</span>
+            <i class="bi bi-display me-2 fs-4"></i> <span class="fs-4">TechShop</span>
         </a>
 
         <!-- Toggle (mobile) -->
@@ -16,9 +16,10 @@
 
             <!-- Left Side -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <!-- Home -->
                 <li class="nav-item">
                     <a class="nav-link text-white fw-medium {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">
-                        <i class="bi bi-house me-1"></i> Početna
+                        <i class="bi bi-house-door me-1"></i> Početna
                     </a>
                 </li>
 
@@ -28,45 +29,43 @@
                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-grid me-1"></i> Kategorije
                     </a>
+
                     <ul class="dropdown-menu border-0 shadow">
-                        @foreach($kategorije ?? [] as $kat)
-                            <li>
-                                <a class="dropdown-item" href="{{ route('proizvodi.kategorija', $kat->id_kategorija) }}">
-                                    {{ $kat->ImeKategorija }}
-                                </a>
-                            </li>
-                        @endforeach
+                        @if(!empty($kategorije) && count($kategorije) > 0)
+                            @foreach($kategorije as $kat)
+                                @if(is_object($kat))
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center" href="{{ route('proizvodi.kategorija', $kat->id_kategorija) }}">
+                                            <i class="bi bi-tag-fill text-primary me-2"></i>
+                                            <span>{{ $kat->ImeKategorija }}</span>
+                                        </a>
+                                    </li>
+                                @endif
+                            @endforeach
+                        @else
+                            <li><span class="dropdown-item text-muted">Nema dostupnih kategorija</span></li>
+                        @endif
                     </ul>
                 </li>
             </ul>
 
-            <!-- Search Form -->
+            <!-- Search Bar -->
             <form method="GET"
-                  action="{{ isset($categoryId) && $categoryId ? route('proizvodi.kategorija', $categoryId) : route('proizvodi.index') }}"
-                  class="d-flex align-items-center me-3 w-50">
-
-                <div class="input-group">
-                    <input type="text" name="search" value="{{ request('search') }}" class="form-control rounded-start-pill"
-                           placeholder="Pretraži proizvode...">
-
-                    <select name="sort" class="form-select border-start-0" style="max-width: 160px;"
-                            onchange="this.form.submit()">
-                        <option value="">Sortiraj</option>
-                        <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>Naziv (A-Z)</option>
-                        <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>Naziv (Z-A)</option>
-                        <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Cijena (↓)</option>
-                        <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Cijena (↑)</option>
-                        <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Najnoviji</option>
-                    </select>
-
-                    <button type="submit" class="btn btn-light rounded-end-pill">
-                        <i class="bi bi-search text-primary"></i>
+                action="{{ isset($categoryId) && $categoryId ? route('proizvodi.kategorija', $categoryId) : route('proizvodi.index') }}"
+                class="d-flex align-items-center search-form me-3">
+                <div class="search-container d-flex align-items-center bg-white rounded-pill shadow-sm px-3 py-1">
+                    <input type="text" name="search" value="{{ request('search') }}"
+                           class="form-control border-0 search-input"
+                           placeholder="Pretraži proizvode..." aria-label="Search">
+                    <button type="submit" class="btn btn-link text-primary p-0 ms-2">
+                        <i class="bi bi-search fs-5"></i>
                     </button>
                 </div>
             </form>
 
             <!-- Right Side -->
             <ul class="navbar-nav align-items-center mb-2 mb-lg-0">
+
                 <!-- Cart -->
                 <li class="nav-item me-3 position-relative">
                     <a href="{{ route('cart.index') }}" class="text-white position-relative fs-5">
@@ -95,15 +94,13 @@
                     </li>
                 @else
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white fw-semibold" href="#" role="button"
-                           data-bs-toggle="dropdown">
-                            <i class="bi bi-person-circle me-1"></i> {{ Auth::user()->name }}
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                        <a class="nav-link dropdown-toggle text-white" href="#" role="button"
+                           data-bs-toggle="dropdown">{{ Auth::user()->name }}</a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow">
                             <li>
-                                <a class="dropdown-item" href="#"
+                                <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    <i class="bi bi-box-arrow-right me-1"></i> Odjava
+                                    Odjava
                                 </a>
                             </li>
                         </ul>
@@ -116,3 +113,46 @@
         </div>
     </div>
 </nav>
+
+<!-- Optional hover animation + search expand -->
+<style>
+    .navbar .dropdown-menu a.dropdown-item:hover {
+        background-color: #f8f9fa;
+        transform: translateX(5px);
+        transition: 0.2s;
+    }
+
+    .navbar .nav-link.active {
+        font-weight: bold;
+        border-bottom: 2px solid #fff;
+    }
+
+    .search-container {
+        transition: all 0.3s ease;
+        width: 590px;
+    }
+
+    .search-container:focus-within {
+        width: 600px;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+
+    .search-input {
+        outline: none !important;
+        box-shadow: none !important;
+    }
+
+    .search-input::placeholder {
+        color: #888;
+    }
+
+    .search-input:focus::placeholder {
+        color: transparent;
+    }
+
+    @media (max-width: 992px) {
+        .search-container {
+            width: 100%;
+        }
+    }
+</style>
