@@ -21,6 +21,11 @@ Route::get('/proizvodi', [ProizvodController::class, 'index'])->name('proizvodi.
 Route::get('/kategorija/{id}', [ProizvodController::class, 'kategorija'])->name('proizvodi.kategorija');
 
 // ---------------------
+// 🔍 AJAX search route
+// ---------------------
+Route::get('/search-proizvodi', [ProizvodController::class, 'ajaxSearch'])->name('proizvodi.search');
+
+// ---------------------
 // 🛒 Cart
 // ---------------------
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');

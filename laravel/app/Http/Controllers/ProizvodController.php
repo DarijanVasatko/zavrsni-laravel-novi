@@ -90,4 +90,24 @@ class ProizvodController extends Controller
             'categoryId' => $id,
         ]);
     }
+
+    public function ajaxSearch(Request $request)
+{
+    $query = Proizvod::query();
+
+    if ($request->filled('categoryId')) {
+        $query->where('id_kategorija', $request->categoryId);
+    }
+
+    if ($request->filled('search')) {
+        $query->where('Naziv', 'like', '%' . $request->search . '%');
+    }
+
+    $proizvodi = $query->limit(12)->get();
+
+    return response()->json([
+        'html' => view('partials.product_cards', ['proizvodi' => $proizvodi])->render()
+    ]);
+}
+
 }
