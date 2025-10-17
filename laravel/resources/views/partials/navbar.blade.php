@@ -1,9 +1,8 @@
-<!-- resources/views/partials/navbar.blade.php -->
 <nav class="navbar navbar-expand-lg navbar-dark shadow-sm sticky-top" style="background: #0d6efd;">
     <div class="container py-2">
 
         <!-- Brand -->
-        <a class="navbar-brand fw-bold d-flex align-items-center text-white" href="{{ url('/') }}">
+        <a class="navbar-brand fw-bold d-flex align-items-center text-white" href="{{ route('index.index') }}">
             <i class="bi bi-display me-2 fs-4"></i> <span class="fs-4">TechShop</span>
         </a>
 
@@ -18,24 +17,27 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <!-- Home -->
                 <li class="nav-item">
-                    <a class="nav-link text-white fw-medium {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">
+                    <a class="nav-link text-white fw-medium {{ request()->is('/') ? 'active' : '' }}"
+                       href="{{ route('index.index') }}">
                         <i class="bi bi-house-door me-1"></i> Početna
                     </a>
                 </li>
 
                 <!-- Categories Dropdown -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-white fw-medium" href="#" id="kategorijeDropdown"
-                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <li class="nav-item dropdown position-relative kategorije-dropdown">
+                    <a class="nav-link dropdown-toggle text-white fw-medium"
+                       href="{{ route('index.index') }}"
+                       id="kategorijeDropdown" role="button" aria-expanded="false">
                         <i class="bi bi-grid me-1"></i> Kategorije
                     </a>
 
-                    <ul class="dropdown-menu border-0 shadow">
+                    <ul class="dropdown-menu shadow border-0" aria-labelledby="kategorijeDropdown">
                         @if(!empty($kategorije) && count($kategorije) > 0)
                             @foreach($kategorije as $kat)
                                 @if(is_object($kat))
                                     <li>
-                                        <a class="dropdown-item d-flex align-items-center" href="{{ route('proizvodi.kategorija', $kat->id_kategorija) }}">
+                                        <a class="dropdown-item d-flex align-items-center"
+                                           href="{{ route('proizvodi.kategorija', $kat->id_kategorija) }}">
                                             <i class="bi bi-tag-fill text-primary me-2"></i>
                                             <span>{{ $kat->ImeKategorija }}</span>
                                         </a>
@@ -114,7 +116,7 @@
     </div>
 </nav>
 
-<!-- Optional hover animation + search expand -->
+<!-- Navbar Styling -->
 <style>
     .navbar .dropdown-menu a.dropdown-item:hover {
         background-color: #f8f9fa;
@@ -127,6 +129,7 @@
         border-bottom: 2px solid #fff;
     }
 
+    /* Search bar animation */
     .search-container {
         transition: all 0.3s ease;
         width: 590px;
@@ -155,4 +158,47 @@
             width: 100%;
         }
     }
+
+    /* ✅ Center dropdown under 'Kategorije' with 10px gap */
+    .navbar .dropdown-menu {
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        margin-top: 10px !important;
+    }
 </style>
+
+<!-- ✅ JS: Hover to open dropdown -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const dropdown = document.querySelector(".kategorije-dropdown");
+        const toggle = dropdown?.querySelector(".dropdown-toggle");
+        const menu = dropdown?.querySelector(".dropdown-menu");
+        let timeoutId;
+
+        if (dropdown && toggle && menu) {
+            const bsDropdown = new bootstrap.Dropdown(toggle);
+
+            // Show on hover
+            dropdown.addEventListener("mouseenter", () => {
+                clearTimeout(timeoutId);
+                bsDropdown.show();
+            });
+
+            // Hide only after a delay when leaving
+            dropdown.addEventListener("mouseleave", () => {
+                timeoutId = setTimeout(() => {
+                    bsDropdown.hide();
+                }, 50); // 👈 stays open for 300ms after leaving
+            });
+
+            // Keep open while hovering over menu itself
+            menu.addEventListener("mouseenter", () => clearTimeout(timeoutId));
+            menu.addEventListener("mouseleave", () => {
+                timeoutId = setTimeout(() => {
+                    bsDropdown.hide();
+                }, 300);
+            });
+        }
+    });
+</script>
+

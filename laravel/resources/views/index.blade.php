@@ -111,7 +111,7 @@
 
     <!-- View all button -->
         <div class="text-center mt-4">
-    <a href="{{ route('categories') }}" class="btn btn-outline-primary btn-lg">
+    <a href="{{ route('proizvodi.index') }}" class="btn btn-outline-primary btn-lg">
         Pogledaj sve proizvode i kategorije
     </a>
 </div>
