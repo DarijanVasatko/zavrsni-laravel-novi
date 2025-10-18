@@ -23,24 +23,46 @@ class CartController extends Controller
 
     // Add product to cart
     public function add(Request $request, $id)
-    {
-        $product = Proizvod::findOrFail($id);
+{
+    // 🔹 1. Find the product
+    $proizvod = Proizvod::findOrFail($id);
 
-        $cart = session()->get('cart', []);
+    // 🔹 2. Get the quantity from the form (default to 1)
+    $quantity = (int) $request->input('quantity', 1);
 
-        if (isset($cart[$id])) {
-            $cart[$id]['quantity']++;
-        } else {
-            $cart[$id] = [
-                "name" => $product->Naziv,
-                "quantity" => 1,
-                "price" => $product->Cijena,
-                "image" => $product->Slika
-            ];
+    // 🔹 3. Stock check (Step 4)
+    if ($proizvod->StanjeNaSkladistu < $quantity) {
+        return redirect()->back()->with('error', 'Nema dovoljno proizvoda na zalihi.');
+    }
+
+    // 🔹 4. Get existing cart from session or create empty one
+    $cart = session()->get('cart', []);
+
+    // 🔹 5. If product already in cart → increase quantity
+    if (isset($cart[$id])) {
+        // Prevent exceeding stock
+        $newQuantity = $cart[$id]['quantity'] + $quantity;
+
+        if ($newQuantity > $proizvod->StanjeNaSkladistu) {
+            return redirect()->back()->with('error', 'Ne možete dodati više od dostupne količine.');
         }
 
-        session()->put('cart', $cart);
-
-        return redirect()->back()->with('success', 'Proizvod dodan u košaricu!');
+        $cart[$id]['quantity'] = $newQuantity;
+    } else {
+        // 🔹 6. Add as a new product
+        $cart[$id] = [
+            'name' => $proizvod->Naziv,
+            'price' => $proizvod->Cijena,
+            'image' => $proizvod->Slika,
+            'quantity' => $quantity,
+        ];
     }
+
+    // 🔹 7. Save the updated cart in session
+    session()->put('cart', $cart);
+
+    // 🔹 8. Redirect back with success message
+    return redirect()->back()->with('success', 'Proizvod dodan u košaricu!');
+}
+
 }

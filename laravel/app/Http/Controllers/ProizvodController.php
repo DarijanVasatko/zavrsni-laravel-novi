@@ -95,4 +95,20 @@ class ProizvodController extends Controller
 
         return [$proizvodi, $kategorije];
     }
+
+    public function show($id)
+{
+    $proizvod = Proizvod::with('kategorija')->findOrFail($id);
+   $slicni = Proizvod::where('kategorija', $proizvod->id_kategorija)
+    ->where('Proizvod_ID', '!=', $proizvod->Proizvod_ID)
+    ->limit(4)
+    ->get();
+
+
+    return view('product', [
+        'proizvod' => $proizvod,
+        'slicni' => $slicni
+    ]);
+}
+
 }

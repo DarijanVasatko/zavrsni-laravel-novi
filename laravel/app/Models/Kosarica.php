@@ -7,17 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Kosarica extends Model
 {
     protected $table = 'kosarica';
-    protected $primaryKey = 'id';
     public $timestamps = false;
 
     protected $fillable = [
-        'korisnik_id', 'proizvod_id', 'kolicina', 'datum_dodavanja'
+        'korisnik_id',
+        'proizvod_id',
+        'kolicina',
+        'datum_dodavanja',
     ];
-
-    public function kupac()
-    {
-        return $this->belongsTo(Kupac::class, 'korisnik_id', 'Kupac_ID');
-    }
 
     public function proizvod()
     {

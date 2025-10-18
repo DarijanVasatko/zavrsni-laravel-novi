@@ -84,26 +84,34 @@
         <div id="product-row" class="d-flex gap-4 overflow-hidden pb-3" 
              style="scroll-behavior: smooth; white-space: nowrap;">
             @foreach ($proizvodi as $product)
-                <div class="card product-card flex-shrink-0" style="width: 250px;">
-                    <div class="product-img-container" style="height: 200px; overflow: hidden;">
-                        <img src="{{ $product->Slika }}" 
-                             class="product-img w-100 h-100 object-fit-cover"
-                             alt="{{ $product->Naziv }}">
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $product->Naziv }}</h5>
-                        <p class="card-text text-muted">{{ $product->Opis }}</p>
-                        <h5 class="text-primary mb-0">{{ number_format($product->Cijena, 2) }} €</h5>
-                    </div>
-                    <div class="card-footer text-center bg-white border-0">
-                        <form action="{{ route('cart.add', ['id' => $product->Proizvod_ID]) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-primary btn-sm">
-                                Dodaj u košaricu
-                            </button>
-                        </form>
-                    </div>
-                </div>
+                <div class="card product-card flex-shrink-0 border-0 shadow-sm" style="width: 250px; border-radius: 1rem; overflow: hidden;">
+    <!-- Image container as clickable link -->
+    <a href="{{ route('proizvod.show', $product->Proizvod_ID) }}" class="text-decoration-none">
+        <div class="product-img-container position-relative" 
+             style="height: 200px; overflow: hidden; border-top-left-radius: 1rem; border-top-right-radius: 1rem;">
+            <img src="{{ asset($product->Slika) }}" 
+                 alt="{{ $product->Naziv }}" 
+                 class="w-100 h-100 object-fit-cover product-img" 
+                 style="transition: transform 0.4s ease;">
+        </div>
+    </a>
+
+    <div class="card-body text-center">
+        <h5 class="card-title fw-bold mb-1">{{ $product->Naziv }}</h5>
+        <p class="card-text text-muted small mb-2">{{ Str::limit($product->Opis, 60) }}</p>
+        <h5 class="text-primary fw-bold mb-3">{{ number_format($product->Cijena, 2) }} €</h5>
+    </div>
+
+    <div class="card-footer text-center bg-white border-0 pb-3">
+        <form action="{{ route('cart.add', ['id' => $product->Proizvod_ID]) }}" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-primary btn-sm rounded-pill px-3">
+                <i class="bi bi-cart-plus me-1"></i> Dodaj u košaricu
+            </button>
+        </form>
+    </div>
+</div>
+
             @endforeach
         </div>
     </div>

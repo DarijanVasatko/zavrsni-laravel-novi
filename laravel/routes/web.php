@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProizvodController;
 use App\Http\Controllers\CartController;
+
 use App\Http\Controllers\ProfileController;
 
 // ---------------------
@@ -33,6 +34,21 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+// ---------------------
+// 🏠 Dashboard (for logged-in users only)
+// ---------------------
+Route::get('/dashboard', function () {
+    return view('dashboard'); // this points to resources/views/dashboard.blade.php
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+// ---------------------
+// 🧩 Single product page
+// ---------------------
+Route::get('/proizvod/{id}', [\App\Http\Controllers\ProizvodController::class, 'show'])
+    ->name('proizvod.show');
+
+
 
 // ---------------------
 // 🌐 Auth routes (Breeze)
