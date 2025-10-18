@@ -3,66 +3,120 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Kosarica;
 use App\Models\Proizvod;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 
 class CartController extends Controller
 {
-    // Show cart page
+    // 🧺 Show cart contents
     public function index()
     {
-        $cart = session()->get('cart', []); // Get cart from session
-        $total = 0;
+        if (Auth::check()) {
+            // Logged in → load from DB
+            $cartItems = Kosarica::where('korisnik_id', Auth::id())
+                ->with('proizvod')
+                ->get();
 
-        // Calculate total price
-        foreach ($cart as $item) {
-            $total += $item['price'] * $item['quantity'];
+            // Format to match session-style array
+            $cart = [];
+            foreach ($cartItems as $item) {
+                $cart[$item->proizvod_id] = [
+                    'name' => $item->proizvod->Naziv,
+                    'price' => $item->proizvod->Cijena,
+                    'image' => $item->proizvod->Slika,
+                    'quantity' => $item->kolicina,
+                ];
+            }
+        } else {
+            // Guest → load from session
+            $cart = session('cart', []);
         }
 
-        return view('cart', compact('cart', 'total'));
+        return view('cart', compact('cart'));
     }
 
-    // Add product to cart
+    // ➕ Add item to cart
     public function add(Request $request, $id)
 {
-    // 🔹 1. Find the product
-    $proizvod = Proizvod::findOrFail($id);
+    $product = Proizvod::findOrFail($id);
+    $quantity = $request->input('quantity', 1);
 
-    // 🔹 2. Get the quantity from the form (default to 1)
-    $quantity = (int) $request->input('quantity', 1);
+    if (Auth::check()) {
+        // Logged in user
+        $cartItem = DB::table('kosarica')
+            ->where('korisnik_id', Auth::id())
+            ->where('proizvod_id', $id)
+            ->first();
 
-    // 🔹 3. Stock check (Step 4)
-    if ($proizvod->StanjeNaSkladistu < $quantity) {
-        return redirect()->back()->with('error', 'Nema dovoljno proizvoda na zalihi.');
-    }
-
-    // 🔹 4. Get existing cart from session or create empty one
-    $cart = session()->get('cart', []);
-
-    // 🔹 5. If product already in cart → increase quantity
-    if (isset($cart[$id])) {
-        // Prevent exceeding stock
-        $newQuantity = $cart[$id]['quantity'] + $quantity;
-
-        if ($newQuantity > $proizvod->StanjeNaSkladistu) {
-            return redirect()->back()->with('error', 'Ne možete dodati više od dostupne količine.');
+        if ($cartItem) {
+            DB::table('kosarica')
+                ->where('id', $cartItem->id)
+                ->update(['kolicina' => $cartItem->kolicina + $quantity]);
+        } else {
+            DB::table('kosarica')->insert([
+                'korisnik_id' => Auth::id(),
+                'proizvod_id' => $id,
+                'kolicina' => $quantity
+            ]);
         }
 
-        $cart[$id]['quantity'] = $newQuantity;
+        $cartCount = DB::table('kosarica')->where('korisnik_id', Auth::id())->sum('kolicina');
     } else {
-        // 🔹 6. Add as a new product
-        $cart[$id] = [
-            'name' => $proizvod->Naziv,
-            'price' => $proizvod->Cijena,
-            'image' => $proizvod->Slika,
-            'quantity' => $quantity,
-        ];
+        // Guest cart via session
+        $cart = session('cart', []);
+        if (isset($cart[$id])) {
+            $cart[$id]['quantity'] += $quantity;
+        } else {
+            $cart[$id] = [
+                'product' => $product,
+                'quantity' => $quantity
+            ];
+        }
+        session(['cart' => $cart]);
+        $cartCount = collect($cart)->sum('quantity');
     }
 
-    // 🔹 7. Save the updated cart in session
-    session()->put('cart', $cart);
+    // ✅ Return AJAX response
+    if ($request->expectsJson()) {
+        return response()->json([
+            'success' => true,
+            'product' => $product->Naziv,
+            'quantity' => $quantity,
+            'cartCount' => $cartCount,
+        ]);
+    }
 
-    // 🔹 8. Redirect back with success message
     return redirect()->back()->with('success', 'Proizvod dodan u košaricu!');
 }
 
+    // ❌ Remove item from cart
+    public function remove($id)
+    {
+        if (Auth::check()) {
+            Kosarica::where('korisnik_id', Auth::id())
+                ->where('proizvod_id', $id)
+                ->delete();
+        } else {
+            $cart = session('cart', []);
+            unset($cart[$id]);
+            session(['cart' => $cart]);
+        }
+
+        return redirect()->route('cart.index')->with('success', 'Proizvod je uklonjen iz košarice.');
+    }
+
+    // 🔄 Clear all items
+    public function clear()
+    {
+        if (Auth::check()) {
+            Kosarica::where('korisnik_id', Auth::id())->delete();
+        } else {
+            session()->forget('cart');
+        }
+
+        return redirect()->route('cart.index')->with('success', 'Košarica je ispražnjena.');
+    }
 }

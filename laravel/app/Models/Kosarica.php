@@ -16,8 +16,11 @@ class Kosarica extends Model
         'datum_dodavanja',
     ];
 
+    
+
     public function proizvod()
-    {
-        return $this->belongsTo(Proizvod::class, 'proizvod_id', 'Proizvod_ID');
-    }
+{
+    return $this->belongsTo(\App\Models\Proizvod::class, 'proizvod_id', 'Proizvod_ID');
+}
+
 }

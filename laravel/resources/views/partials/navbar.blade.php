@@ -70,14 +70,17 @@
 
                 <!-- Cart -->
                 <li class="nav-item me-3 position-relative">
-                    <a href="{{ route('cart.index') }}" class="text-white position-relative fs-5">
-                        <i class="bi bi-cart"></i>
-                        @if(session('cart'))
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                {{ count(session('cart')) }}
-                            </span>
-                        @endif
-                    </a>
+                    <a href="{{ route('cart.index') }}" class="nav-link position-relative">
+    <i class="bi bi-cart3" style="font-size:1.4rem;"></i>
+    <span id="cart-count"
+          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger {{ $cartCount > 0 ? '' : 'd-none' }}">
+        {{ $cartCount }}
+    </span>
+</a>
+
+
+        
+    </a>
                 </li>
 
                 <!-- Auth Buttons -->
