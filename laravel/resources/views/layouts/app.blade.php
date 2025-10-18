@@ -170,6 +170,42 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 </script>
+<!-- ⚙️ Adaptive smooth scroll -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const container = document.getElementById("product-row");
+    if (!container) return;
 
+    // Clone content for seamless infinite scroll
+    container.innerHTML += container.innerHTML;
+
+    // 🧠 Adaptive speed based on screen size
+    const getSpeed = () => window.innerWidth < 768 ? 0.6 : 0.3;
+
+    let scrollSpeed = getSpeed();
+    let isPaused = false;
+
+    function smoothScroll() {
+        if (!isPaused) {
+            container.scrollLeft += scrollSpeed;
+            if (container.scrollLeft >= container.scrollWidth / 2) {
+                container.scrollLeft = 0;
+            }
+        }
+        requestAnimationFrame(smoothScroll);
+    }
+
+    // Pause on hover
+    container.addEventListener("mouseenter", () => isPaused = true);
+    container.addEventListener("mouseleave", () => isPaused = false);
+
+    // Update scroll speed on resize
+    window.addEventListener("resize", () => {
+        scrollSpeed = getSpeed();
+    });
+
+    smoothScroll();
+});
+</script>
 </body>
 </html>

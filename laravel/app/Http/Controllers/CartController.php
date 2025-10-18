@@ -94,19 +94,29 @@ class CartController extends Controller
 
     // ❌ Remove item from cart
     public function remove($id)
-    {
-        if (Auth::check()) {
-            Kosarica::where('korisnik_id', Auth::id())
-                ->where('proizvod_id', $id)
-                ->delete();
-        } else {
-            $cart = session('cart', []);
+{
+    if (Auth::check()) {
+        // Remove from DB
+        Kosarica::where('korisnik_id', Auth::id())
+            ->where('proizvod_id', $id)
+            ->delete();
+
+        // Also remove from session (if any)
+        $cart = session('cart', []);
+        if (isset($cart[$id])) {
             unset($cart[$id]);
             session(['cart' => $cart]);
         }
-
-        return redirect()->route('cart.index')->with('success', 'Proizvod je uklonjen iz košarice.');
+    } else {
+        // Guest only
+        $cart = session('cart', []);
+        unset($cart[$id]);
+        session(['cart' => $cart]);
     }
+
+    return redirect()->route('cart.index')->with('success', 'Proizvod je uklonjen iz košarice.');
+}
+
 
     // 🔄 Clear all items
     public function clear()
