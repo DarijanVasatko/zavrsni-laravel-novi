@@ -153,5 +153,23 @@
             });
         })();
     </script>
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const dropdown = document.querySelector(".nav-item.dropdown");
+    const dropdownMenu = dropdown.querySelector(".dropdown-menu");
+
+    if (window.innerWidth > 992) { // Desktop only
+        dropdown.addEventListener("mouseenter", () => {
+            dropdown.classList.add("show");
+            dropdownMenu.classList.add("show");
+        });
+        dropdown.addEventListener("mouseleave", () => {
+            dropdown.classList.remove("show");
+            dropdownMenu.classList.remove("show");
+        });
+    }
+});
+</script>
+
 </body>
 </html>

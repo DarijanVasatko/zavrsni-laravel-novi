@@ -23,7 +23,6 @@ Route::get('/ajax/proizvodi', [ProizvodController::class, 'ajaxSearch'])->name('
 // ---------------------
 // 🛒 Cart
 // ---------------------
-// 🛒 Cart routes
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
 Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
@@ -41,8 +40,7 @@ Route::middleware('auth')->group(function () {
 // ---------------------
 // 🏠 Dashboard (for logged-in users only)
 // ---------------------
-Route::get('/dashboard', function () {
-    return view('dashboard'); // this points to resources/views/dashboard.blade.php
+Route::get('/dashboard', function () { return view('dashboard'); // this points to resources/views/dashboard.blade.php
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // ---------------------
