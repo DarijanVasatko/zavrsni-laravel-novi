@@ -39,7 +39,7 @@
     </div>
 </section>
 
-<!-- 🏷️ Izdvojeni proizvodi -->
+<!-- Izdvojeni proizvodi -->
 <section id="featured-products" class="py-5">
     <div class="container">
         <h2 class="text-center fw-bold mb-5">Izdvojeni proizvodi</h2>
