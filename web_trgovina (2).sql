@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 07, 2025 at 09:55 AM
+-- Generation Time: Oct 21, 2025 at 10:51 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -31,7 +31,7 @@ CREATE TABLE `cache` (
   `key` varchar(255) NOT NULL,
   `value` mediumtext NOT NULL,
   `expiration` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -43,7 +43,7 @@ CREATE TABLE `cache_locks` (
   `key` varchar(255) NOT NULL,
   `owner` varchar(255) NOT NULL,
   `expiration` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -56,7 +56,7 @@ CREATE TABLE `detalji_narudzbe` (
   `Narudzba_ID` int(11) DEFAULT NULL,
   `Proizvod_ID` int(11) DEFAULT NULL,
   `Kolicina` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_croatian_mysql561_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `detalji_narudzbe`
@@ -132,7 +132,7 @@ CREATE TABLE `failed_jobs` (
   `payload` longtext NOT NULL,
   `exception` longtext NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -148,7 +148,7 @@ CREATE TABLE `jobs` (
   `reserved_at` int(10) UNSIGNED DEFAULT NULL,
   `available_at` int(10) UNSIGNED NOT NULL,
   `created_at` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -167,7 +167,7 @@ CREATE TABLE `job_batches` (
   `cancelled_at` int(11) DEFAULT NULL,
   `created_at` int(11) NOT NULL,
   `finished_at` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -178,7 +178,7 @@ CREATE TABLE `job_batches` (
 CREATE TABLE `kategorija` (
   `id_kategorija` int(11) NOT NULL,
   `ImeKategorija` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_croatian_mysql561_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `kategorija`
@@ -186,10 +186,10 @@ CREATE TABLE `kategorija` (
 
 INSERT INTO `kategorija` (`id_kategorija`, `ImeKategorija`) VALUES
 (1, 'Laptop'),
-(2, 'Ra??unalo'),
+(2, 'Računalo'),
 (3, 'Komponente'),
 (4, 'Pohrana'),
-(5, 'Oprena za ra??unala'),
+(5, 'Oprena za računala'),
 (6, 'Mobiteli'),
 (7, 'Tableti'),
 (8, 'TV'),
@@ -208,14 +208,16 @@ CREATE TABLE `kosarica` (
   `proizvod_id` int(11) NOT NULL,
   `kolicina` int(11) NOT NULL DEFAULT 1,
   `datum_dodavanja` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_croatian_mysql561_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `kosarica`
 --
 
 INSERT INTO `kosarica` (`id`, `korisnik_id`, `proizvod_id`, `kolicina`, `datum_dodavanja`) VALUES
-(14, 63, 18, 2, '2025-05-26 11:50:37');
+(14, 63, 18, 2, '2025-05-26 11:50:37'),
+(32, 2, 15, 1, '2025-10-18 14:48:33'),
+(33, 2, 39, 5, '2025-10-18 14:48:33');
 
 -- --------------------------------------------------------
 
@@ -234,7 +236,7 @@ CREATE TABLE `kupac` (
   `Email` varchar(100) NOT NULL,
   `Username` varchar(15) NOT NULL,
   `Lozinka` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_croatian_mysql561_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `kupac`
@@ -283,7 +285,7 @@ CREATE TABLE `migrations` (
   `id` int(10) UNSIGNED NOT NULL,
   `migration` varchar(255) NOT NULL,
   `batch` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `migrations`
@@ -308,7 +310,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (16, '2025_09_24_193505_create_kosarica_table', 1),
 (17, '2025_09_24_193511_create_narudzba_table', 1),
 (18, '2025_09_24_193515_create_detalji_narudzbe_table', 1),
-(19, '2025_09_24_193519_create_nacin_placanja_table', 1);
+(19, '2025_09_24_193519_create_nacin_placanja_table', 1),
+(20, '2025_10_01_073148_create_proizvods_table', 2);
 
 -- --------------------------------------------------------
 
@@ -319,7 +322,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 CREATE TABLE `nacin_placanja` (
   `NacinPlacanja_ID` int(11) NOT NULL,
   `Opis` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_croatian_mysql561_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `nacin_placanja`
@@ -345,7 +348,7 @@ CREATE TABLE `narudzba` (
   `NacinPlacanja_ID` int(11) DEFAULT NULL,
   `Datum_narudzbe` date NOT NULL,
   `Ukupni_iznos` decimal(10,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_croatian_mysql561_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `narudzba`
@@ -400,7 +403,7 @@ CREATE TABLE `password_reset_tokens` (
   `email` varchar(255) NOT NULL,
   `token` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -414,35 +417,48 @@ CREATE TABLE `proizvod` (
   `Naziv` varchar(100) NOT NULL,
   `Opis` text DEFAULT NULL,
   `Cijena` decimal(10,2) NOT NULL,
+  `KratkiOpis` text DEFAULT NULL,
   `kategorija` int(11) NOT NULL,
   `StanjeNaSkladistu` int(11) NOT NULL,
   `Slika` varchar(5000) DEFAULT NULL COMMENT 'Putanja do slike na disku',
   `tip_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_croatian_mysql561_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `proizvod`
 --
 
-INSERT INTO `proizvod` (`Proizvod_ID`, `sifra`, `Naziv`, `Opis`, `Cijena`, `kategorija`, `StanjeNaSkladistu`, `Slika`, `tip_id`) VALUES
-(1, 420635866419203, 'Laptop HP Pavilion', '15.6', 995.00, 1, 10, 'uploads/products/product_1_67e2f5cdb34ef.jpg', 51),
-(2, 489472286923658, 'Monitor Dell', '27', 238.00, 5, 18, 'uploads/products/product_2_682b52dacbb5a.jpeg', 3),
-(3, 513933606740020, 'Mi?? Logitech', 'Be??i??ni mi??', 33.00, 5, 50, 'uploads/products/product_3_682b52d24e5ab.jpeg', 1),
-(4, 878750325810476, 'Tipkovnica Corsair', 'Mehani??ka tipkovnica', 120.00, 5, 30, 'uploads/products/product_4_682b52cb519f9.jpeg', 2),
-(5, 916482860256714, 'Grafi??ka kartica GTX 1650', '4GB GDDR6', 179.99, 3, 15, 'uploads/products/product_5_682b531491006.jpeg', 4),
-(6, 120301646838960, 'SSD Kingston 500GB', 'NVMe PCIe 3.0', 75.99, 4, 25, 'uploads/products/product_6_682b52f23e66d.jpeg', 8),
-(7, 853225904750917, 'RAM Corsair Vengeance 16GB', 'DDR4 3200MHz', 89.99, 3, 40, 'uploads/products/product_7_682b531a776de.jpeg', 7),
-(8, 986384991342014, 'Napajanje Corsair 650W', 'Modularno', 105.99, 3, 18, 'uploads/products/product_8_682b530d817de.jpeg', 10),
-(9, 512679540770866, 'Ku??i??te NZXT H510', 'ATX mid tower', 119.50, 3, 22, 'uploads/products/product_9_682b53079cbf5.jpeg', 11),
-(10, 685032126697331, 'Procesor Ryzen 5 5600X', '6 jezgri, 12 dretvi', 210.00, 3, 8, 'uploads/products/product_10_67e2fa07645fe.jpg', 5),
-(11, 685032126697331, 'Monitor Samsung 24', 'Full HD LED', 155.00, 5, 17, 'uploads/products/product_11_682b52c31797e.jpeg', 3),
-(12, 140652170418473, 'HDD WD Blue 1TB', '7200rpm', 45.50, 4, 60, 'uploads/products/product_12_682b52e8c33a0.jpeg', 9),
-(13, 878077845335664, 'Printer Epson L3150', 'Inkjet, WiFi', 215.00, 5, 12, 'uploads/products/product_13_682b52bc21a0d.jpeg', 39),
-(14, 785804491289448, 'Mi?? Razer DeathAdder', 'Gaming mi??', 59.50, 5, 35, 'uploads/products/product_14_682b52b3204d2.jpeg', 1),
-(15, 988826881917199, 'Ventilator Arctic F12', '120mm hladnjak', 12.00, 3, 100, 'uploads/products/product_15_682b52ff60908.jpeg', 12),
-(16, 293429082709619, 'USB Hub Anker', '4 USB 3.0 priklju??ka', 25.00, 4, 45, 'uploads/products/product_16_682b52e1dfe9d.jpeg', 18),
-(18, 288754726913537, 'Mati??na plo??a ASUS B550', 'Za Ryzen procesore', 144.50, 3, 14, 'uploads/products/product_18_682b52f92d6cd.jpeg', 6),
-(39, 0, 'SSD Crucial BX500', 'Ovo je SSD', 21.10, 4, 30, 'uploads/products/product_39_683451723d7ed.jpg', 8);
+INSERT INTO `proizvod` (`Proizvod_ID`, `sifra`, `Naziv`, `Opis`, `Cijena`, `KratkiOpis`, `kategorija`, `StanjeNaSkladistu`, `Slika`, `tip_id`) VALUES
+(1, 420635866419203, 'Laptop HP Pavilion', '15.6', 995.00, NULL, 1, 10, 'uploads/products/product_1_67e2f5cdb34ef.jpg', 51),
+(2, 489472286923658, 'Monitor Dell', '27', 238.00, NULL, 5, 18, 'uploads/products/product_2_682b52dacbb5a.jpeg', 3),
+(3, 513933606740020, 'Miš Logitech', 'Bežični miš', 33.00, NULL, 5, 50, 'uploads/products/product_3_682b52d24e5ab.jpeg', 1),
+(4, 878750325810476, 'Tipkovnica Corsair', 'Mehanička tipkovnica', 120.00, NULL, 5, 30, 'uploads/products/product_4_682b52cb519f9.jpeg', 2),
+(5, 916482860256714, 'Grafička kartica GTX 1650', '4GB GDDR6', 179.99, NULL, 3, 15, 'uploads/products/product_5_682b531491006.jpeg', 4),
+(6, 120301646838960, 'SSD Kingston 500GB', 'NVMe PCIe 3.0', 75.99, NULL, 4, 25, 'uploads/products/product_6_682b52f23e66d.jpeg', 8),
+(7, 853225904750917, 'RAM Corsair Vengeance 16GB', 'DDR4 3200MHz', 89.99, NULL, 3, 40, 'uploads/products/product_7_682b531a776de.jpeg', 7),
+(8, 986384991342014, 'Napajanje Corsair 650W', 'Modularno', 105.99, NULL, 3, 18, 'uploads/products/product_8_682b530d817de.jpeg', 10),
+(9, 512679540770866, 'Kučište NZXT H510', 'ATX mid tower', 119.50, NULL, 3, 22, 'uploads/products/product_9_682b53079cbf5.jpeg', 11),
+(10, 685032126697331, 'Procesor Ryzen 5 5600X', '6 jezgri, 12 dretvi', 210.00, NULL, 3, 8, 'uploads/products/product_10_67e2fa07645fe.jpg', 5),
+(11, 685032126697331, 'Monitor Samsung 24', 'Full HD LED', 155.00, NULL, 5, 17, 'uploads/products/product_11_682b52c31797e.jpeg', 3),
+(12, 140652170418473, 'HDD WD Blue 1TB', '7200rpm', 45.50, NULL, 4, 60, 'uploads/products/product_12_682b52e8c33a0.jpeg', 9),
+(13, 878077845335664, 'Printer Epson L3150', 'Inkjet, WiFi', 215.00, NULL, 5, 12, 'uploads/products/product_13_682b52bc21a0d.jpeg', 39),
+(14, 785804491289448, 'Miš Razer DeathAdder', 'Gaming miš', 59.50, NULL, 5, 35, 'uploads/products/product_14_682b52b3204d2.jpeg', 1),
+(15, 988826881917199, 'Ventilator Arctic F12', '120mm hladnjak', 12.00, NULL, 3, 100, 'uploads/products/product_15_682b52ff60908.jpeg', 12),
+(16, 293429082709619, 'USB Hub Anker', '4 USB 3.0 priključka', 25.00, NULL, 4, 45, 'uploads/products/product_16_682b52e1dfe9d.jpeg', 18),
+(18, 288754726913537, 'Matična ploča ASUS B550', 'Za Ryzen procesore', 144.50, NULL, 3, 14, 'uploads/products/product_18_682b52f92d6cd.jpeg', 6),
+(39, 0, 'SSD Crucial BX500', 'Ovo je SSD', 21.10, NULL, 4, 32, 'uploads/products/product_39_683451723d7ed.jpg', 8);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `proizvods`
+--
+
+CREATE TABLE `proizvods` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -457,19 +473,15 @@ CREATE TABLE `sessions` (
   `user_agent` text DEFAULT NULL,
   `payload` longtext NOT NULL,
   `last_activity` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `sessions`
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('4JaJjCL4bqlhvqoUeKLb3tVVubCKzHAaMtbnU54C', NULL, '127.0.0.1', 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Mobile Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiSncyRXpBWld1Rm9BYmNiVFk4akNjWFE1dVJQUzVRd2k5RjVqQVNKUCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1758989571),
-('4ssM75c3WCi36xAN81IJ3YN6Ifq0gTRjagIgsnhP', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiMlduTFNkMTEzQm9YZUUyVExWOFJhQW5uUFliTENiNjVxR2ltM09vVyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hdXRoL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1758811111),
-('6JVdhBjIxJmFypo8ZcqEYcS39WafYYewD8vDh8nN', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiYlE0Z21lQWlodTlucWNmTEJueFZJRTd5SjdpbDl5U0puZTNQMmNxTSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC8/c2VhcmNoPSZzb3J0PSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1759823694),
-('DwIBiogB29YGAUTEDNwEf5HekoaF7zbkfplh8D6k', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoicWlTY0JDTXVNeFBLWDhob29MVDVlTTg4bEtCUnNRUGQ3MUNFSk1OWiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDQ6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC8/cGFnZT0xJnNvcnQ9cHJpY2VfYXNjIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1759415760),
-('siojYJANx1yPAr7cQw9peb5FnUznynw1DgDf9fsp', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiSDdsWUtDN2tZaDJxMVlSVmp0NVJOTUZ3Y1U2ZjZlMGlJNWRTbkRrYSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1759304274),
-('UedRb9C8K2B8MEOAcTZ0l5AdovntNaE4zfl2YpyP', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiQjVQT0lJTGhZYnl4SWVGdWw2WE1oZmJWRDk4a1pCMG1yMXBRcWZ6SSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1758987971);
+('DNrT7r6C0BK67Kgn9UNhCuBr0vuYGp6ymlfVNbeE', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiTVk1cGplSmRZS3pmMDR0UFgycHV0NjZtUGIyT3Qyb0U2a2JjM0NRcSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7czo0OiJjYXJ0IjthOjM6e2k6MTE7YTo0OntzOjQ6Im5hbWUiO3M6MTg6Ik1vbml0b3IgU2Ftc3VuZyAyNCI7czo1OiJwcmljZSI7czo2OiIxNTUuMDAiO3M6ODoicXVhbnRpdHkiO2k6MjtzOjU6ImltYWdlIjtzOjQ2OiJ1cGxvYWRzL3Byb2R1Y3RzL3Byb2R1Y3RfMTFfNjgyYjUyYzMxNzk3ZS5qcGVnIjt9aToxNDthOjQ6e3M6NDoibmFtZSI7czoyMToiTWnFoSBSYXplciBEZWF0aEFkZGVyIjtzOjU6InByaWNlIjtzOjU6IjU5LjUwIjtzOjg6InF1YW50aXR5IjtpOjI7czo1OiJpbWFnZSI7czo0NjoidXBsb2Fkcy9wcm9kdWN0cy9wcm9kdWN0XzE0XzY4MmI1MmIzMjA0ZDIuanBlZyI7fWk6Mzk7YTo0OntzOjQ6Im5hbWUiO3M6MTc6IlNTRCBDcnVjaWFsIEJYNTAwIjtzOjU6InByaWNlIjtzOjU6IjIxLjEwIjtzOjg6InF1YW50aXR5IjtpOjI7czo1OiJpbWFnZSI7czo0NToidXBsb2Fkcy9wcm9kdWN0cy9wcm9kdWN0XzM5XzY4MzQ1MTcyM2Q3ZWQuanBnIjt9fX0=', 1760800217),
+('ZhjolRlXOoOlyr7PgwQYCgxhRaNOgoq7h4NKnKBN', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiY3BrYzUwWmhqYXFDYVFCVUo2OEt0Q2dEYkRKZ0l6aUNWY2x3VU9iNSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7czo0OiJjYXJ0IjthOjA6e319', 1761036204);
 
 -- --------------------------------------------------------
 
@@ -480,7 +492,7 @@ INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, 
 CREATE TABLE `tip_proizvoda` (
   `id_tip` int(11) NOT NULL,
   `naziv_tip` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_croatian_mysql561_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tip_proizvoda`
@@ -554,7 +566,16 @@ CREATE TABLE `users` (
   `remember_token` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'Darijan Vašatko', 'darijanko114@gmail.com', NULL, '$2y$12$0P6wLrVwZLx2JDfno0DiD.cmxtNM3r/o/1FYZ/wdnmF/WreLRMxwO', 'rukokR4Omxa60da4K7xXFy5AkTDaxe2qNf1o4PhuKAc35sSkQXTeTSjGk9kA', '2025-10-17 14:37:45', '2025-10-17 14:37:45'),
+(2, 'Lucija Vašatko', 'darijanko112@gmail.com', NULL, '$2y$12$DGYcbd52ioS/iovDPJGioOlOXnGzogq..JD3lrgn.h1JdKYYRmX0y', NULL, '2025-10-17 15:21:15', '2025-10-17 15:21:15'),
+(3, 'Ivana Milić', 'imilic17@gmail.com', NULL, '$2y$12$Cs.fmVgMQ2JhPw7EnpAVT.QPbhMK14KnfzOF.973kNsIzle8lNJZm', NULL, '2025-10-18 06:02:32', '2025-10-18 06:02:32');
 
 --
 -- Indexes for dumped tables
@@ -656,6 +677,12 @@ ALTER TABLE `proizvod`
   ADD KEY `fk_tip` (`tip_id`);
 
 --
+-- Indexes for table `proizvods`
+--
+ALTER TABLE `proizvods`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `sessions`
 --
 ALTER TABLE `sessions`
@@ -702,7 +729,7 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `kosarica`
 --
 ALTER TABLE `kosarica`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `kupac`
@@ -714,7 +741,7 @@ ALTER TABLE `kupac`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `nacin_placanja`
@@ -735,6 +762,12 @@ ALTER TABLE `proizvod`
   MODIFY `Proizvod_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
+-- AUTO_INCREMENT for table `proizvods`
+--
+ALTER TABLE `proizvods`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `tip_proizvoda`
 --
 ALTER TABLE `tip_proizvoda`
@@ -744,7 +777,7 @@ ALTER TABLE `tip_proizvoda`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
