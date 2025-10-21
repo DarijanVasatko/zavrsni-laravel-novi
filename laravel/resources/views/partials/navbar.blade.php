@@ -123,10 +123,10 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-white fw-semibold" href="#" id="userMenu" role="button"
                            data-bs-toggle="dropdown">
-                            <i class="bi bi-person-circle me-1"></i> {{ Auth::user()->name }}
+                            <i class="bi bi-person-circle me-1"></i> Bok, {{ Auth::user()->ime }} {{ Auth::user()->prezime }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                            <li><a class="dropdown-item" href="{{ route('dashboard') }}">Profil</a></li> <!-- popravi ovo je drop za profil -->
+                            <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Profil</a></li> <!-- popravi ovo je drop za profil -->
                             <li>
                                 <form action="{{ route('logout') }}" method="POST" class="d-inline">
                                     @csrf

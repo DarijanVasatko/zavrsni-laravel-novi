@@ -49,6 +49,30 @@ Route::get('/dashboard', function () { return view('dashboard'); // this points 
 Route::get('/proizvod/{id}', [\App\Http\Controllers\ProizvodController::class, 'show'])
     ->name('proizvod.show');
 
+// ---------------------
+// Profile routes
+// ---------------------
+    Route::middleware('auth')->group(function () {
+    Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+
+    // 🏠 User addresses routes
+    Route::post('/profile/address', [App\Http\Controllers\ProfileController::class, 'addAddress'])->name('profile.address.add');
+    Route::delete('/profile/address/{id}', [App\Http\Controllers\ProfileController::class, 'deleteAddress'])->name('profile.address.delete');
+});
+
+Route::post('/profile/address/{id}/default', [ProfileController::class, 'setDefaultAddress'])
+    ->name('profile.address.default');
+
+
+
+
+
 
 
 // ---------------------

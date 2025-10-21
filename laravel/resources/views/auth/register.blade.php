@@ -21,11 +21,26 @@
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
 
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Ime i prezime</label>
-                            <input id="name" class="form-control rounded-pill" type="text" name="name"
-                                   value="{{ old('name') }}" required autofocus autocomplete="name">
-                        </div>
+                        <div class="row mb-3">
+    <div class="col-md-6">
+        <label for="ime" class="form-label">Ime</label>
+        <input id="ime" type="text" class="form-control @error('ime') is-invalid @enderror"
+               name="ime" value="{{ old('ime') }}" required autofocus>
+        @error('ime')
+            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+        @enderror
+    </div>
+
+    <div class="col-md-6">
+        <label for="prezime" class="form-label">Prezime</label>
+        <input id="prezime" type="text" class="form-control @error('prezime') is-invalid @enderror"
+               name="prezime" value="{{ old('prezime') }}" required>
+        @error('prezime')
+            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+        @enderror
+    </div>
+</div>
+
 
                         <div class="mb-3">
                             <label for="email" class="form-label">Email adresa</label>
