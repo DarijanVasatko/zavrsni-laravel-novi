@@ -7,21 +7,21 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProfileController;
 
 // ---------------------
-// 🏠 Homepage (index.blade.php)
+// Homepage (index.blade.php)
 // ---------------------
 Route::get('/', [ProizvodController::class, 'home'])->name('index.index');
 
 // ---------------------
-// 🧩 Products / Categories (category.blade.php)
+// Products / Categories (category.blade.php)
 // ---------------------
 Route::get('/proizvodi', [ProizvodController::class, 'list'])->name('proizvodi.index');
 Route::get('/kategorija/{id}', [ProizvodController::class, 'kategorija'])->name('proizvodi.kategorija');
 
-// 🔍 AJAX search (used by category.blade.php JS)
+// AJAX search (used by category.blade.php JS)
 Route::get('/ajax/proizvodi', [ProizvodController::class, 'ajaxSearch'])->name('proizvodi.search');
 
 // ---------------------
-// 🛒 Cart
+// Cart
 // ---------------------
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
@@ -29,7 +29,7 @@ Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('car
 
 
 // ---------------------
-// 👤 Authenticated user pages (Breeze)
+// Authenticated user pages (Breeze)
 // ---------------------
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -38,13 +38,13 @@ Route::middleware('auth')->group(function () {
 });
 
 // ---------------------
-// 🏠 Dashboard (for logged-in users only)
+// Dashboard (for logged-in users only)
 // ---------------------
 Route::get('/dashboard', function () { return view('dashboard'); // this points to resources/views/dashboard.blade.php
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // ---------------------
-// 🧩 Single product page
+// Single product page
 // ---------------------
 Route::get('/proizvod/{id}', [\App\Http\Controllers\ProizvodController::class, 'show'])
     ->name('proizvod.show');
@@ -52,6 +52,6 @@ Route::get('/proizvod/{id}', [\App\Http\Controllers\ProizvodController::class, '
 
 
 // ---------------------
-// 🌐 Auth routes (Breeze)
+// Auth routes (Breeze)
 // ---------------------
 require __DIR__.'/auth.php';
