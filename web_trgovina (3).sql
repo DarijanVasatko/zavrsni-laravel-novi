@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 21, 2025 at 10:51 AM
+-- Generation Time: Oct 22, 2025 at 08:46 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -217,7 +217,9 @@ CREATE TABLE `kosarica` (
 INSERT INTO `kosarica` (`id`, `korisnik_id`, `proizvod_id`, `kolicina`, `datum_dodavanja`) VALUES
 (14, 63, 18, 2, '2025-05-26 11:50:37'),
 (32, 2, 15, 1, '2025-10-18 14:48:33'),
-(33, 2, 39, 5, '2025-10-18 14:48:33');
+(33, 2, 39, 5, '2025-10-18 14:48:33'),
+(46, 1, 18, 1, '2025-10-21 17:46:51'),
+(47, 1, 16, 1, '2025-10-21 17:46:53');
 
 -- --------------------------------------------------------
 
@@ -311,7 +313,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (17, '2025_09_24_193511_create_narudzba_table', 1),
 (18, '2025_09_24_193515_create_detalji_narudzbe_table', 1),
 (19, '2025_09_24_193519_create_nacin_placanja_table', 1),
-(20, '2025_10_01_073148_create_proizvods_table', 2);
+(20, '2025_10_01_073148_create_proizvods_table', 2),
+(21, '2025_10_21_152118_split_name_in_users_table', 3),
+(22, '2025_10_21_164522_create_user_addresses_table', 4),
+(23, '2025_10_21_170454_update_user_addresses_table_remove_name_columns', 5);
 
 -- --------------------------------------------------------
 
@@ -480,8 +485,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('DNrT7r6C0BK67Kgn9UNhCuBr0vuYGp6ymlfVNbeE', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiTVk1cGplSmRZS3pmMDR0UFgycHV0NjZtUGIyT3Qyb0U2a2JjM0NRcSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7czo0OiJjYXJ0IjthOjM6e2k6MTE7YTo0OntzOjQ6Im5hbWUiO3M6MTg6Ik1vbml0b3IgU2Ftc3VuZyAyNCI7czo1OiJwcmljZSI7czo2OiIxNTUuMDAiO3M6ODoicXVhbnRpdHkiO2k6MjtzOjU6ImltYWdlIjtzOjQ2OiJ1cGxvYWRzL3Byb2R1Y3RzL3Byb2R1Y3RfMTFfNjgyYjUyYzMxNzk3ZS5qcGVnIjt9aToxNDthOjQ6e3M6NDoibmFtZSI7czoyMToiTWnFoSBSYXplciBEZWF0aEFkZGVyIjtzOjU6InByaWNlIjtzOjU6IjU5LjUwIjtzOjg6InF1YW50aXR5IjtpOjI7czo1OiJpbWFnZSI7czo0NjoidXBsb2Fkcy9wcm9kdWN0cy9wcm9kdWN0XzE0XzY4MmI1MmIzMjA0ZDIuanBlZyI7fWk6Mzk7YTo0OntzOjQ6Im5hbWUiO3M6MTc6IlNTRCBDcnVjaWFsIEJYNTAwIjtzOjU6InByaWNlIjtzOjU6IjIxLjEwIjtzOjg6InF1YW50aXR5IjtpOjI7czo1OiJpbWFnZSI7czo0NToidXBsb2Fkcy9wcm9kdWN0cy9wcm9kdWN0XzM5XzY4MzQ1MTcyM2Q3ZWQuanBnIjt9fX0=', 1760800217),
-('ZhjolRlXOoOlyr7PgwQYCgxhRaNOgoq7h4NKnKBN', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiY3BrYzUwWmhqYXFDYVFCVUo2OEt0Q2dEYkRKZ0l6aUNWY2x3VU9iNSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7czo0OiJjYXJ0IjthOjA6e319', 1761036204);
+('9Oj4HW8CbH38CeuINk9MRWRNxYZVKbjN4xaPUeYV', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiYWFzckdVWTRTUUFSclI2bFA3bXF6YlY5VG90MWhiUUM3cUpiMGlrNCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7czo0OiJjYXJ0IjthOjA6e319', 1761068901);
 
 -- --------------------------------------------------------
 
@@ -559,7 +563,8 @@ INSERT INTO `tip_proizvoda` (`id_tip`, `naziv_tip`) VALUES
 
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `ime` varchar(255) DEFAULT NULL,
+  `prezime` varchar(255) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
@@ -572,10 +577,38 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Darijan Vašatko', 'darijanko114@gmail.com', NULL, '$2y$12$0P6wLrVwZLx2JDfno0DiD.cmxtNM3r/o/1FYZ/wdnmF/WreLRMxwO', 'rukokR4Omxa60da4K7xXFy5AkTDaxe2qNf1o4PhuKAc35sSkQXTeTSjGk9kA', '2025-10-17 14:37:45', '2025-10-17 14:37:45'),
-(2, 'Lucija Vašatko', 'darijanko112@gmail.com', NULL, '$2y$12$DGYcbd52ioS/iovDPJGioOlOXnGzogq..JD3lrgn.h1JdKYYRmX0y', NULL, '2025-10-17 15:21:15', '2025-10-17 15:21:15'),
-(3, 'Ivana Milić', 'imilic17@gmail.com', NULL, '$2y$12$Cs.fmVgMQ2JhPw7EnpAVT.QPbhMK14KnfzOF.973kNsIzle8lNJZm', NULL, '2025-10-18 06:02:32', '2025-10-18 06:02:32');
+INSERT INTO `users` (`id`, `ime`, `prezime`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'Darijan', 'Vašatko', 'darijanko114@gmail.com', NULL, '$2y$12$0P6wLrVwZLx2JDfno0DiD.cmxtNM3r/o/1FYZ/wdnmF/WreLRMxwO', 'rukokR4Omxa60da4K7xXFy5AkTDaxe2qNf1o4PhuKAc35sSkQXTeTSjGk9kA', '2025-10-17 14:37:45', '2025-10-17 14:37:45'),
+(2, 'Lucija', 'Vašatko', 'darijanko112@gmail.com', NULL, '$2y$12$DGYcbd52ioS/iovDPJGioOlOXnGzogq..JD3lrgn.h1JdKYYRmX0y', NULL, '2025-10-17 15:21:15', '2025-10-17 15:21:15'),
+(3, 'Ivana', 'Milić', 'imilic17@gmail.com', NULL, '$2y$12$Cs.fmVgMQ2JhPw7EnpAVT.QPbhMK14KnfzOF.973kNsIzle8lNJZm', NULL, '2025-10-18 06:02:32', '2025-10-18 06:02:32'),
+(4, 'Dariel', 'Kužilek', 'darijanko111@gmail.com', NULL, '$2y$12$n0Bpu2HsPyP8F1IaBko0Ee6y3B/NjN.leq1uk9II8oPsCO.IHW62a', NULL, '2025-10-21 13:50:20', '2025-10-21 13:50:20');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_addresses`
+--
+
+CREATE TABLE `user_addresses` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `adresa` varchar(255) DEFAULT NULL,
+  `grad` varchar(255) DEFAULT NULL,
+  `postanski_broj` varchar(255) DEFAULT NULL,
+  `drzava` varchar(255) NOT NULL DEFAULT 'Hrvatska',
+  `is_default` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `user_addresses`
+--
+
+INSERT INTO `user_addresses` (`id`, `user_id`, `adresa`, `grad`, `postanski_broj`, `drzava`, `is_default`, `created_at`, `updated_at`) VALUES
+(1, 4, 'Lavoslava Ružičke 28', 'Daruvar', '43500', 'Hrvatska', 1, '2025-10-21 14:51:25', '2025-10-21 15:34:18'),
+(2, 4, 'Ivana Cankara 5', 'Daruvar', '43500', 'Hrvatska', 0, '2025-10-21 15:44:18', '2025-10-21 15:44:18'),
+(3, 1, 'Ivana Cankara 5', 'Daruvar', '43500', 'Hrvatska', 1, '2025-10-21 15:45:18', '2025-10-21 15:45:21');
 
 --
 -- Indexes for dumped tables
@@ -704,6 +737,13 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `users_email_unique` (`email`);
 
 --
+-- Indexes for table `user_addresses`
+--
+ALTER TABLE `user_addresses`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_addresses_user_id_foreign` (`user_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -729,7 +769,7 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `kosarica`
 --
 ALTER TABLE `kosarica`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `kupac`
@@ -741,7 +781,7 @@ ALTER TABLE `kupac`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `nacin_placanja`
@@ -777,6 +817,12 @@ ALTER TABLE `tip_proizvoda`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `user_addresses`
+--
+ALTER TABLE `user_addresses`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
@@ -810,6 +856,12 @@ ALTER TABLE `narudzba`
 ALTER TABLE `proizvod`
   ADD CONSTRAINT `fk_tip` FOREIGN KEY (`tip_id`) REFERENCES `tip_proizvoda` (`id_tip`),
   ADD CONSTRAINT `proizvod_ibfk_1` FOREIGN KEY (`kategorija`) REFERENCES `kategorija` (`id_kategorija`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `user_addresses`
+--
+ALTER TABLE `user_addresses`
+  ADD CONSTRAINT `user_addresses_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
