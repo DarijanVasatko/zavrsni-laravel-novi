@@ -16,6 +16,7 @@ Route::get('/', [ProizvodController::class, 'home'])->name('index.index');
 // ---------------------
 Route::get('/proizvodi', [ProizvodController::class, 'list'])->name('proizvodi.index');
 Route::get('/kategorija/{id}', [ProizvodController::class, 'kategorija'])->name('proizvodi.kategorija');
+Route::get('/kategorija/{id}', [ProizvodController::class, 'kategorija'])->name('proizvodi.kategorija');
 
 // AJAX search (used by category.blade.php JS)
 Route::get('/ajax/proizvodi', [ProizvodController::class, 'ajaxSearch'])->name('proizvodi.search');

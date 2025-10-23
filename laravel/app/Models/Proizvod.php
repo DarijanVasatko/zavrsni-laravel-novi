@@ -2,16 +2,19 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Proizvod extends Model
 {
+    use HasFactory; // ✅ This line enables Proizvod::factory()
+
     protected $table = 'proizvod';
     protected $primaryKey = 'Proizvod_ID';
     public $timestamps = false;
 
     protected $fillable = [
-        'sifra', 'Naziv', 'Opis', 'Cijena', 'kategorija',
+        'sifra', 'Naziv', 'Opis', 'Cijena', 'KratkiOpis', 'kategorija',
         'StanjeNaSkladistu', 'Slika', 'tip_id'
     ];
 

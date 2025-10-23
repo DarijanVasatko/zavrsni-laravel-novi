@@ -62,7 +62,7 @@ class ProizvodController extends Controller
         $query = Proizvod::query();
 
         if (!is_null($categoryId)) {
-            $query->where('id_kategorija', $categoryId);
+            $query->where('kategorija', $categoryId);
         }
 
         // Search
