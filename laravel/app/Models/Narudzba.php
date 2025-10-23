@@ -2,30 +2,38 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Narudzba extends Model
 {
+    use HasFactory;
+
     protected $table = 'narudzba';
-    protected $primaryKey = 'Narudzba_ID';
-    public $timestamps = false;
+    protected $primaryKey = 'id';
+    public $timestamps = true;
 
     protected $fillable = [
-        'Kupac_ID', 'NacinPlacanja_ID', 'Datum_narudzbe', 'Ukupni_iznos'
+        'user_id',
+        'nacin_placanja_id',
+        'ukupna_cijena',
+        'status',
+        'adresa_dostave',
     ];
 
-    public function kupac()
+    /** 🔗 Relations */
+    public function user()
     {
-        return $this->belongsTo(Kupac::class, 'Kupac_ID', 'Kupac_ID');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function detalji()
     {
-        return $this->hasMany(DetaljiNarudzbe::class, 'Narudzba_ID', 'Narudzba_ID');
+        return $this->hasMany(DetaljiNarudzbe::class, 'narudzba_id');
     }
 
     public function nacinPlacanja()
     {
-        return $this->belongsTo(NacinPlacanja::class, 'NacinPlacanja_ID', 'NacinPlacanja_ID');
+        return $this->belongsTo(NacinPlacanja::class, 'nacin_placanja_id');
     }
 }

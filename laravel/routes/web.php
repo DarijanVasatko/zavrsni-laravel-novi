@@ -3,8 +3,17 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProizvodController;
 use App\Http\Controllers\CartController;
-
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+| All user-facing routes for TechShop
+|--------------------------------------------------------------------------
+*/
 
 // ---------------------
 // Homepage (index.blade.php)
@@ -16,67 +25,53 @@ Route::get('/', [ProizvodController::class, 'home'])->name('index.index');
 // ---------------------
 Route::get('/proizvodi', [ProizvodController::class, 'list'])->name('proizvodi.index');
 Route::get('/kategorija/{id}', [ProizvodController::class, 'kategorija'])->name('proizvodi.kategorija');
-Route::get('/kategorija/{id}', [ProizvodController::class, 'kategorija'])->name('proizvodi.kategorija');
 
 // AJAX search (used by category.blade.php JS)
 Route::get('/ajax/proizvodi', [ProizvodController::class, 'ajaxSearch'])->name('proizvodi.search');
 
 // ---------------------
-// Cart
+// Cart (kosarica)
 // ---------------------
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
 Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 
-
 // ---------------------
-// Authenticated user pages (Breeze)
+// Single product page
 // ---------------------
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+Route::get('/proizvod/{id}', [ProizvodController::class, 'show'])->name('proizvod.show');
 
 // ---------------------
 // Dashboard (for logged-in users only)
 // ---------------------
-Route::get('/dashboard', function () { return view('dashboard'); // this points to resources/views/dashboard.blade.php
+Route::get('/dashboard', function () {
+    return view('dashboard'); // points to resources/views/dashboard.blade.php
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // ---------------------
-// Single product page
+// Authenticated user routes
 // ---------------------
-Route::get('/proizvod/{id}', [\App\Http\Controllers\ProizvodController::class, 'show'])
-    ->name('proizvod.show');
+Route::middleware(['auth'])->group(function () {
 
-// ---------------------
-// Profile routes
-// ---------------------
-    Route::middleware('auth')->group(function () {
-    Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    // ---------- PROFILE ----------
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Manage addresses
+    Route::post('/profile/address/{id}/default', [ProfileController::class, 'setDefaultAddress'])
+        ->name('profile.address.default');
+
+    // ---------- CHECKOUT ----------
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+
+    // ---------- ORDERS ----------
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
-
-    // 🏠 User addresses routes
-    Route::post('/profile/address', [App\Http\Controllers\ProfileController::class, 'addAddress'])->name('profile.address.add');
-    Route::delete('/profile/address/{id}', [App\Http\Controllers\ProfileController::class, 'deleteAddress'])->name('profile.address.delete');
-});
-
-Route::post('/profile/address/{id}/default', [ProfileController::class, 'setDefaultAddress'])
-    ->name('profile.address.default');
-
-
-
-
-
-
-
 // ---------------------
-// Auth routes (Breeze)
+// Auth routes (Laravel Breeze / Jetstream / Fortify)
 // ---------------------
 require __DIR__.'/auth.php';

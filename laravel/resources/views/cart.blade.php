@@ -135,9 +135,10 @@
                                     <h4 class="fw-bold mt-3">Ukupno za platiti: 
                                         <span class="text-primary">{{ number_format($grandTotal, 2) }} €</span>
                                     </h4>
-                                    <a href="#" class="btn btn-primary rounded-pill px-5 py-2 fw-semibold shadow-sm mt-3">
-                                        <i class="bi bi-credit-card me-2"></i> Završi kupnju
-                                    </a>
+                                    <a href="{{ route('checkout.index') }}" 
+   class="btn btn-primary rounded-pill px-5 py-2 fw-semibold shadow-sm mt-3">
+   <i class="bi bi-credit-card me-2"></i> Završi kupnju
+</a>
                                 </div>
                             </div>
                         </div>

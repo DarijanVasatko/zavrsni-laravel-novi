@@ -2,25 +2,32 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class DetaljiNarudzbe extends Model
 {
+    use HasFactory;
+
     protected $table = 'detalji_narudzbe';
-    protected $primaryKey = 'DetaljiNarudzbe_ID';
+    protected $primaryKey = 'id';
     public $timestamps = false;
 
     protected $fillable = [
-        'Narudzba_ID', 'Proizvod_ID', 'Kolicina'
+        'narudzba_id',
+        'proizvod_id',
+        'kolicina',
+        'cijena'
     ];
 
+    /** 🔗 Relations */
     public function narudzba()
     {
-        return $this->belongsTo(Narudzba::class, 'Narudzba_ID', 'Narudzba_ID');
+        return $this->belongsTo(Narudzba::class, 'narudzba_id');
     }
 
     public function proizvod()
     {
-        return $this->belongsTo(Proizvod::class, 'Proizvod_ID', 'Proizvod_ID');
+        return $this->belongsTo(Proizvod::class, 'proizvod_id');
     }
 }
