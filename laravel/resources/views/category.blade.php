@@ -113,28 +113,7 @@
             box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
         }
 
-        .list-group-item {
-    position: relative;
-    overflow: hidden;
-}
-
-.list-group-item::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 0;
-    height: 0;
-    background: rgba(13, 110, 253, 0.1);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s ease, height 0.3s ease;
-}
-
-.list-group-item:hover::after {
-    width: 250%;
-    height: 250%;
-}
+        
     </style>
 
     <script>
