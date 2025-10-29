@@ -56,14 +56,14 @@ class ProfileController extends Controller
 {
     $request->validate([
         'adresa' => 'required|string|max:255',
-        'grad' => 'required|string|max:255',
-        'postanski_broj' => 'required|string|max:10',
-        'drzava' => 'required|string|max:255',
+        'grad' => 'required|string|max:100',
+        'postanski_broj' => 'required|string|max:20',
+        'drzava' => 'required|string|max:100',
     ]);
 
     $user = Auth::user();
 
-    $user->addresses()->create([
+    $address = $user->addresses()->create([
         'adresa' => $request->adresa,
         'grad' => $request->grad,
         'postanski_broj' => $request->postanski_broj,
@@ -71,8 +71,9 @@ class ProfileController extends Controller
         'is_default' => $request->has('is_default'),
     ]);
 
-    return redirect()->back()->with('success', 'Adresa uspješno dodana!');
+    return back()->with('success', 'Adresa je uspješno dodana.');
 }
+
 
 
     public function deleteAddress($id)

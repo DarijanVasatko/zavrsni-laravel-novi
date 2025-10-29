@@ -6,6 +6,9 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CountryController;
+use App\Http\Controllers\OnboardingController;
+use App\Http\Controllers\CountryTownController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +31,7 @@ Route::get('/kategorija/{id}', [ProizvodController::class, 'kategorija'])->name(
 
 // AJAX search (used by category.blade.php JS)
 Route::get('/ajax/proizvodi', [ProizvodController::class, 'ajaxSearch'])->name('proizvodi.search');
+Route::get('/countries/search', [CountryController::class, 'search'])->name('countries.search');
 
 // ---------------------
 // Cart (kosarica)
@@ -62,6 +66,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/profile/address/{id}/default', [ProfileController::class, 'setDefaultAddress'])
         ->name('profile.address.default');
 
+        Route::post('/profile/address/add', [ProfileController::class, 'addAddress'])
+    ->name('profile.address.add');
+
+Route::post('/profile/address/delete', [ProfileController::class, 'deleteAddress'])
+    ->name('profile.address.delete');
     // ---------- CHECKOUT ----------
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
@@ -70,6 +79,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
 });
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/onboarding', [OnboardingController::class, 'show'])->name('onboarding.show');
+    Route::post('/onboarding', [OnboardingController::class, 'store'])->name('onboarding.store');
+});
+
+Route::get('/towns/search', [CountryTownController::class, 'search'])->name('towns.search');
 
 // ---------------------
 // Auth routes (Laravel Breeze / Jetstream / Fortify)

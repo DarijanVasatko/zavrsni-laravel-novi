@@ -61,28 +61,28 @@
                                         <div class="row g-3">
                                             <div class="col-md-6">
                                                 <label for="ime" class="form-label fw-semibold">Ime</label>
-                                                <input type="text" name="ime" id="ime" value="{{ old('ime', $user->ime) }}"
+                                                <input type="text" name="ime" id="ime" value="{{ old('ime', auth()->user()->ime ?? '') }}"
                                                     class="form-control rounded-pill shadow-sm" required>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <label for="prezime" class="form-label fw-semibold">Prezime</label>
                                                 <input type="text" name="prezime" id="prezime"
-                                                    value="{{ old('prezime', $user->prezime) }}"
+                                                    value="{{ old('prezime', auth()->user()->prezime ?? '') }}"
                                                     class="form-control rounded-pill shadow-sm" required>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <label for="email" class="form-label fw-semibold">Email</label>
                                                 <input type="email" name="email" id="email"
-                                                    value="{{ old('email', $user->email) }}"
+                                                    value="{{ old('email', auth()->user()->email ?? '') }}"
                                                     class="form-control rounded-pill shadow-sm" required>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <label for="telefon" class="form-label fw-semibold">Telefon</label>
                                                 <input type="text" name="telefon" id="telefon"
-                                                    value="{{ old('telefon', $user->telefon ?? '') }}"
+                                                    value="{{ old('telefon', auth()->user()->telefon ?? '') }}"
                                                     class="form-control rounded-pill shadow-sm">
                                             </div>
 
@@ -121,10 +121,15 @@
                                                 <input type="text" name="postanski_broj" class="form-control rounded-pill"
                                                     placeholder="Poštanski broj" required>
                                             </div>
-                                            <div class="col-md-6">
-                                                <input type="text" name="drzava" class="form-control rounded-pill"
-                                                    placeholder="Država" value="Hrvatska">
+                                            <div class="col-md-6 position-relative">
+                                                <input type="text" name="drzava" id="drzava"
+                                                    class="form-control rounded-pill"
+                                                    placeholder="Počni upisivati državu..." autocomplete="off">
+                                                <ul id="country-suggestions"
+                                                    class="list-group position-absolute w-100 mt-1 shadow-sm d-none"
+                                                    style="z-index: 1000;"></ul>
                                             </div>
+
 
                                             <div class="col-12 d-flex align-items-center mt-2">
                                                 <input type="checkbox" name="is_default" id="is_default"
@@ -142,11 +147,11 @@
                                     </form>
 
                                     <!-- Saved addresses -->
-                                    @if($user->addresses->isEmpty())
+                                    @if(auth()->user()->addresses->isEmpty())
                                         <p class="text-muted text-center">Nemate spremljenih adresa.</p>
                                     @else
                                         <div class="list-group shadow-sm rounded-4">
-                                            @foreach($user->addresses as $address)
+                                            @foreach(auth()->user()->addresses as $address)
                                                 <div
                                                     class="list-group-item d-flex justify-content-between align-items-start {{ $address->is_default ? 'bg-light border-primary' : '' }}">
                                                     <div>
@@ -297,4 +302,52 @@
             });
         });
     </script>
+
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const input = document.getElementById('drzava');
+    const suggestions = document.getElementById('country-suggestions');
+    let timeout = null;
+
+    input.addEventListener('input', function() {
+        const query = this.value.trim();
+        clearTimeout(timeout);
+
+        if (query.length < 1) {
+            suggestions.classList.add('d-none');
+            return;
+        }
+
+        timeout = setTimeout(() => {
+            fetch(`/countries/search?q=${encodeURIComponent(query)}`)
+                .then(res => res.json())
+                .then(data => {
+                    suggestions.innerHTML = '';
+                    if (data.length === 0) {
+                        suggestions.classList.add('d-none');
+                        return;
+                    }
+                    data.forEach(country => {
+                        const li = document.createElement('li');
+                        li.className = 'list-group-item list-group-item-action';
+                        li.textContent = country;
+                        li.onclick = () => {
+                            input.value = country;
+                            suggestions.classList.add('d-none');
+                        };
+                        suggestions.appendChild(li);
+                    });
+                    suggestions.classList.remove('d-none');
+                });
+        }, 300);
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!suggestions.contains(e.target) && e.target !== input) {
+            suggestions.classList.add('d-none');
+        }
+    });
+});
+</script>
+
 @endsection
